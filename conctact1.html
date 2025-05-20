@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Yoné Express</title>
+    <style>
+        :root {
+            --primary-color: #FF8C00;
+            --secondary-color: #da7c24;
+            --text-color: #333;
+            text-align: center;
+            --transition-speed: 0.3s;
+            display: none;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #FF8C00, #FFFFFF);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Animations CSS */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(-30%); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Header */
+        header {
+            background: var(--primary-color);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all var(--transition-speed);
+        }
+
+        .header-scroll {
+            padding: 0.7rem 1rem;
+            background: rgba(255,140,0,0.98);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: white;
+        }
+
+        .logo img {
+            height: 60px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Navigation */
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all var(--transition-speed);
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: width var(--transition-speed);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Section Contact */
+        #contact {
+            flex: 1;
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 2rem;
+            width: 95%;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .contact-info {
+            background: linear-gradient(to right, #FF8C00, #FFFFFF);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .contact-card {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .map-container {
+            object-fit: cover;
+            height: 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+        }
+
+        /* Formulaire */
+        form {
+            display: grid;
+            gap: 1.5rem;
+            background: linear-gradient(to right, #FF8C00, #FFFFFF);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        input, textarea, button {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all var(--transition-speed);
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 12px rgba(255,140,0,0.2);
+            outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255,255,255,0.1);
+            transform: rotate(45deg) translate(-550%, -50%);
+            transition: transform 0.6s ease;
+        }
+
+        button:hover::after {
+            transform: rotate(45deg) translate(150%, -50%);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-color);
+            color: white;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section {
+            text-align: center;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1rem;
+        }
+
+        .social-media {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .social-media img {
+            width: 40px;
+            height: 40px;
+            transition: transform 0.3s;
+        }
+
+        .social-media img:hover {
+            transform: scale(1.1);
+        }
+
+        .footer-buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .cta-button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color var(--transition-speed);
+        }
+
+        .cta-button:hover {
+            background-color: #da7c24;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .info-grid, .stats-grid, .team-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .map-container {
+                height: 250px;
+            }
+            
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--primary-color);
+                flex-direction: column;
+                padding: 1rem;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo img {
+                height: 50px;
+            }
+            
+            form {
+                padding: 1.5rem;
+            }
+        }
+    }
+}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <img src="logo yonee express.png" alt="Yoné Express">
+                <h1>Yoné Express</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="acceuil2.html">Accueil</a></li>
+                    <li><a href="info.html">Info</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="prix.html">Prix</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="contact">
+        <h2>📬 Contactez-nous</h2>
+        <div class="contact-container">
+            <div class="contact-info">
+                <div class="contact-card">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#FF8C00">
+                        <path d="M12 0C7.802 0 4 3.403 4 7.602 4 11.8 7.469 16.812 12 24c4.531-7.188 8-12.2 8-16.398C20 3.403 16.199 0 12 0zm0 11a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/>
+                    </svg>
+                    <div>
+                        <h3>Notre adresse</h3>
+                        <p>123 Rue de Transport<br>Dakar, Sénégal</p>
+                    </div>
+                </div>
+
+                <div class="contact-card">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#FF8C00">
+                        <path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1 12h-2v-6h2v6zm0 3h-2v-2h2v2z"/>
+                    </svg>
+                    <div>
+                        <h3>Horaires</h3>
+                        <p>Lun-Ven: 8h-20h<br>Sam: 9h-18h</p>
+                    </div>
+                </div>
+
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3859.328389099458!2d-17.451850685157517!3d14.692534589709022!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTTCsDQxJzMzLjEiTiAxN8KwMjYnNTkuOSJX!5e0!3m2!1sfr!2ssn!4v1623334257893!5m2!1sfr!2ssn" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+
+            <form id="contactForm">
+                <input type="text" placeholder="Votre nom complet" required>
+                <input type="email" placeholder="Adresse email" required>
+                <input type="tel" placeholder="Téléphone" pattern="[0-9]{10}" required>
+                <textarea placeholder="Votre message..." rows="5" required></textarea>
+                <button type="submit">Envoyer le message ➔</button>
+            </form>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p><strong>Email:</strong> contact@yoneexpress.com</p>
+                <p><strong>Téléphone:</strong> +221 77 123 45 67</p>
+            </div>
+            <div class="footer-section">
+                <h4>Adresse</h4>
+                <p>123 Rue de Transport, Dakar, Sénégal</p>
+            </div>
+            <div class="footer-section">
+                <h4>Suivez-nous</h4>
+                <div class="social-media">
+                    <a href="#"><img src="Snapchat.jpg" alt="Snapchat"></a>
+                    <a href="#"><img src="instagram.jpg" alt="Instagram"></a>
+                    <a href="#"><img src="tiktok.jpg" alt="TikTok"></a>
+                    <a href="#"><img src="facebook1.jpg" alt="Facebook"></a>
+                </div>
+            </div>
+        </div>
+        <p>&copy; 2025 Yoné Express - Tous droits réservés.</p>
+    </footer>
+
+    <script>
+        // Animation du header au scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            header.classList.toggle('header-scroll', window.scrollY > 50);
+        });
+
+        // Animation des éléments au chargement
+        document.addEventListener('DOMContentLoaded', () => {
+            const animatedElements = document.querySelectorAll('.contact-card, form, .map-container');
+            animatedElements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, 200 * index);
+            });
+        });
+
+        // Gestion du formulaire
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Animation de soumission
+            this.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 200);
+
+            // Réinitialisation après 2 secondes
+            setTimeout(() => {
+                this.reset();
+                alert('Message envoyé avec succès !');
+            }, 2000);
+        });
+
+        // Effet de survol sur les cartes
+        document.querySelectorAll('.contact-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-5px)';
+                card.style.boxShadow = '0 5px 20px rgba(0,0,0,0.1)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+                card.style.boxShadow = '0 3px 10px rgba(0,0,0,0.05)';
+            });
+        });
+
+        // Optimisation tactile
+        document.querySelectorAll('button, a').forEach(el => {
+            el.style.minWidth = '48px';
+            el.style.minHeight = '48px';
+        });
+    </script>
+</body>
+</html>

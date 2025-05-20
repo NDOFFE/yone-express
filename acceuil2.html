@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="logo yonee express.png" type="images">
+    <title>Yoné Express - Transport International Fiable</title>
+    <meta name="description" content="Service professionnel de transport de colis entre le Maroc et le Sénégal. Rapidité, sécurité et suivi en temps réel.">
+    <style>
+        :root {
+            --primary-color: #FF8C00;
+            --secondary-color: #da7c24;
+            --text-color: #ffffff;
+            text-align: center;
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #FF8C00, #FFFFFF);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Loader */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 140, 0, 0.95);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: white;
+        }
+
+        .logo img {
+            height: 60px;
+            transition: transform 0.3s;
+        }
+
+        .logo:hover img {
+            transform: rotate(-5deg);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary-color);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        /* Section Accueil */
+        .flags {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .flags img {
+            width: 150px;
+            height: auto;
+            margin: 0 10px;
+        }
+
+        .airplane {
+            position: absolute;
+            width: 50px;
+            height: auto;
+            animation: fly 8s linear infinite;
+        }
+        .world-map {
+            width: 80%;
+            margin: 40px auto;
+            display: block;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes fly {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .image-extract {
+            display: none;
+            width: 200px; /* Largeur de l'élément */
+            height: 200px; /* Hauteur de l'élément */
+            background-image: url('avion.png'); /* Remplacez par votre image */
+            background-position: 50px 50px; /* Ajustez pour centrer l'élément désiré */
+            background-size: 300px 300px; /* Ajustez la taille de l'image de fond */
+            overflow: hidden; /* Pour cacher les parties non désirées */
+            margin: 20px auto; /* Centrer le conteneur */
+        }
+        /* Bouton WhatsApp */
+        .whatsapp-button {
+            position: relative;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            background-color: #25D366;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 18px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .whatsapp-button img {
+            width: 30px;
+            height: 30px;
+            margin-right: 20px;
+        }
+        
+
+        /* Features */
+        /* Features */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 4rem 2rem;
+            background: linear-gradient(to right, #FF8C00, #FFFFFF);
+        }
+
+        .feature-card {
+    position: relative;
+    background: white;
+    padding: 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.3s;
+    }
+
+    .feature-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s;
+    }
+
+    .feature-card:hover img {
+        transform: scale(1.1);
+    }
+
+    .feature-card h3, .feature-card p {
+        padding: 1rem;
+    }
+
+    .feature-text {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: rgb(255, 145, 0);
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 1.2rem;
+        z-index: 1;
+    }
+
+        .feature-card h3, .feature-card p {
+            padding: 1rem;
+        }
+
+        /* Formulaire */
+        .transport-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 2rem auto;
+            animation: slideIn 1s ease-out;
+        }
+
+        .form-step {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: 2px solid var(--primary-color);
+        }
+
+        button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Suivi de colis */
+        .hidden { display: none; }
+
+        .tracking-section {
+            padding: 30px;
+            position: center;
+            background: linear-gradient(to right, #FF8C00, #FFFFFF); 
+            text-align: center;
+            align-items: center; 
+            overflow-y: scroll;}
+
+        .tracking-card {
+            background: linear-gradient(to right, #FF8C00, #FFFFFF); 
+            padding: 20px; 
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+         }
+        .tracking-header { 
+            display: flex;
+            align-items: center;
+            justify-content: center; gap: 10px;
+            color: white;
+            }
+        .tracking-icon { 
+            width: 40px;
+         }
+        .tracking-form {
+            margin-top: 20px; 
+            }
+        .tracking-input {
+            padding: 10px;
+            width: 70%;
+            border: 1px solid #ff7b00; 
+            border-radius: 4px;
+             }
+        .cta-button { 
+            padding: 10px 20px;
+            background: #f1f1f1;
+            color: rgb(245, 118, 0);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+                 }
+        .progress-track {
+            width: 100%; 
+            height: 10px; 
+            background: #ddd;
+            border-radius: 5px;
+            margin: 10px 0;
+             }
+        .progress-bar {
+            height: 10px;
+            background: #32b10c;
+            width: 0%; 
+            transition: width 0.5s;
+             }
+        .status-steps { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-top: 10px;
+         }
+        .status-step {
+            text-align: center;
+            opacity: 0.5; 
+            }
+        .status-step.active { 
+            opacity: 1; 
+        }
+        .comparatif {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #eeab47;
+            color: white;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #ffc219;
+        }
+        .note {
+            margin-top: 20px;
+            font-style: italic;
+            color: #555;
+        }
+
+        /* FAQ */
+        .faq-section {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .faq-item {
+            margin: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem;
+            cursor: pointer;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-color);
+            color: white;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section {
+            text-align: center;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1rem;
+        }
+
+        .social-media {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .social-media img {
+            width: 40px;
+            height: 40px;
+            transition: transform 0.3s;
+        }
+
+        .social-media img:hover {
+            transform: scale(1.1);
+        }
+
+        .footer-buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .cta-button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color var(--transition-speed);
+        }
+
+        .cta-button:hover {
+            background-color: #da7c24;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--primary-color);
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                margin: 0.5rem 0;
+            }
+
+            .logo img {
+                height: 40px;
+            }
+
+            .guarantee-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <header>
+        <nav class="nav-container">
+            <div class="logo">
+                <img src="logo yonee express.png" alt="Logo Yoné Express">
+                <h1>Yoné Express</h1>
+            </div>
+            <button class="menu-toggle">☰</button>
+            <ul class="nav-links">
+                <li><a href="#accueil">Accueil</a></li>
+                <li><a href="info.html">Info</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="prix.html">prix</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" id="accueil">
+            <h1>Transport International de Confiance</h1>
+            <p>Livraison rapide et sécurisée entre le Maroc et le Sénégal</p>
+            
+            <div class="flags">
+                <img src="Morocco.jpg" alt="Drapeau Maroc">
+                <img src="avion.png" class="airplane" alt="Avion">
+                <img src="téléchargement.jpg" alt="Drapeau Sénégal">
+            </div>
+            <img src="carte afrique2.jpg" alt="Carte du monde" class="world-map">
+        <a href="https://wa.me/221771234567" class="whatsapp-button">
+            <img src="whatsapp.jpg" alt="WhatsApp"> Réserver
+        </a>
+        <section class="features" id="services">
+            <div class="feature-card">
+                <div class="feature-text">Livraison Express</div>
+                <img src="image.jpg" alt="Livraison">
+                <h3>Livraison Express</h3>
+                <p>Délais garantis avec suivi en temps réel</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-text">Assurance Incluse</div>
+                <img src="assurance2.jpg" alt="Sécurité">
+                <h3>Assurance Incluse</h3>
+                <p>Vos biens protégés pendant le transport</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-text">Support 24/7</div>
+                <img src="support.png" alt="Support">
+                <h3>Support 24/7</h3>
+                <p>Assistance multilingue disponible</p>
+            </div>
+        </section>
+
+        <div class="transport-form">
+            <h2>Réserver un Transport</h2>
+            <form id="multiStepForm">
+                <div class="form-step active">
+                    <input type="text" placeholder="Nom complet" required>
+                    <input type="email" placeholder="Email" required>
+                    <button type="button" class="next-btn">Suivant</button>
+                </div>
+                <div class="form-step">
+                    <input type="text" placeholder="Lieu de départ" required>
+                    <input type="text" placeholder="Destination" required>
+                    <button type="button" class="prev-btn">Précédent</button>
+                    <button type="button" class="next-btn">Suivant</button>
+                </div>
+                <div class="form-step">
+                    <input type="date" required>
+                    <select required>
+                        <option value="">Mode de transport</option>
+                        <option>Aérien</option>
+                    </select>
+                    <button type="button" class="prev-btn">Précédent</button>
+                    <button type="submit">Valider</button>
+                </div>
+            </form>
+        </div>
+
+                    <!-- Section suivi de colis -->
+<section class="tracking-section">
+    <div class="tracking-card">
+        <div class="tracking-header">
+            <img class="tracking-icon" src="colis.jpg" alt="Tracking">
+            <h2>Suivi de Colis</h2>
+        </div>
+        <form class="tracking-form" onsubmit="trackPackage(event)">
+            <input type="text" id="tracking-input" class="tracking-input" placeholder="Entrez votre numéro de suivi" required>
+            <button type="submit" class="cta-button">Suivre</button>
+        </form>
+        <div id="tracking-result" class="tracking-result hidden">
+            <div class="progress-track">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <div class="status-steps">
+                <div class="status-step" id="step1">
+                    <img class="step-icon" src="order_received.png" alt="Commande reçue">
+                    <p>Commande reçue</p>
+                </div>
+                <div class="status-step" id="step2">
+                    <img class="step-icon" src="in_transit.png" alt="En transit">
+                    <p>En transit</p>
+                </div>
+                <div class="status-step" id="step3">
+                    <img class="step-icon" src="out_for_delivery.png" alt="En cours de livraison">
+                    <p>En cours de livraison</p>
+                </div>
+                <div class="status-step" id="step4">
+                    <img class="step-icon" src="delivered.png" alt="Livré">
+                    <p>Livré</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function trackPackage(event) {
+        event.preventDefault();
+        const trackingInput = document.getElementById("tracking-input").value.trim();
+        const trackingResult = document.getElementById("tracking-result");
+        const progressBar = document.getElementById("progress-bar");
+        
+        // Simuler des données de suivi
+        const trackingData = {
+            "123456": 25, // Commande reçue
+            "654321": 50, // En transit
+            "111222": 75, // En cours de livraison
+            "999888": 100 // Livré
+        };
+        
+        let progress = trackingData[trackingInput] || 0;
+        progressBar.style.width = progress + "%";
+        trackingResult.classList.remove("hidden");
+        
+        // Activer les étapes selon le pourcentage
+        document.querySelectorAll(".status-step").forEach((step, index) => {
+            if (progress >= (index + 1) * 25) {
+                step.classList.add("active");
+            } else {
+                step.classList.remove("active");
+            }
+        });
+    }
+    // Toggle menu mobile
+    const menuToggle = document.querySelector(".menu-toggle");
+    const navLinks = document.querySelector(".nav-links");
+    
+    menuToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("show");
+    });
+    
+    // Toggle light mode
+    const toggleSwitch = document.querySelector(".theme-switch input[type='checkbox']");
+    const currentTheme = localStorage.getItem("theme");
+    
+    if (currentTheme) {
+        document.documentElement.setAttribute("data-theme", currentTheme);
+        toggleSwitch.checked = currentTheme === "dark";
+    }
+    
+    toggleSwitch.addEventListener("change", () => {
+        if (toggleSwitch.checked) {
+            document.documentElement.setAttribute("data-theme", "dark");
+            localStorage.setItem("theme", "dark");
+        } else {
+            document.documentElement.setAttribute("data-theme", "light");
+            localStorage.setItem("theme", "light");
+        }
+    });
+</script>
+
+<section class="comparatif">
+    <h2>les avantages</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Critères</th>
+                <th>Yoné Express</th>
+                <th>Concurrents</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Prix</td>
+                <td class="highlight">Moins cher (à partir de 5€)</td>
+                <td>Généralement plus chere</td>
+            </tr>
+            <tr>
+                <td>Délais de livraison</td>
+                <td class="highlight">Express (48h - 72h)</td>
+                <td>5 à 7 jours</td>
+            </tr>
+            <tr>
+                <td>Suivi en temps réel</td>
+                <td class="highlight">Oui, avec notifications</td>
+                <td>Parfois limité</td>
+            </tr>
+            <tr>
+                <td>Support client</td>
+                <td class="highlight">24/7 - WhatsApp & Email</td>
+                <td>Horaires limités</td>
+            </tr>
+            <tr>
+                <td>Réseau de livraison</td>
+                <td class="highlight">Sénégal - Maroc optimisé</td>
+                <td>Couverture générale</td>
+            </tr>
+        </tbody>
+    </table>
+    <p class="note">Yoné Express offre un service rapide, fiable et abordable, parfait pour vos expéditions entre le Sénégal et le Maroc !</p>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const rows = document.querySelectorAll(".highlight");
+        rows.forEach(row => {
+            row.addEventListener("mouseover", () => {
+                row.style.backgroundColor = "#cce5ff";
+            });
+            row.addEventListener("mouseout", () => {
+                row.style.backgroundColor = "";
+            });
+        });
+    });
+</script>
+
+        <section class="faq-section">
+            <h2>Questions Fréquentes</h2>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Quels sont les délais de livraison ?</span>
+                    <span class="toggle-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Les délais varient entre 3 à 7 jours selon le mode de transport choisi.</p>
+                </div>
+            </div>
+            <!-- Ajouter d'autres questions ici -->
+        </section>
+    </main>
+
+        <footer>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p><strong>Email:</strong> contact@yoneexpress.com</p>
+                    <p><strong>Téléphone:</strong> +221 77 123 45 67</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Adresse</h4>
+                    <p>123 Rue de Transport, Dakar, Sénégal</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Suivez-nous</h4>
+                    <div class="social-media">
+                        <a href="#"><img src="Snapchat.jpg" alt="Snapchat" loading="lazy"></a>
+                        <a href="#"><img src="instagram.jpg" alt="Instagram" loading="lazy"></a>
+                        <a href="#"><img src="tiktok.jpg" alt="TikTok" loading="lazy"></a>
+                        <a href="#"><img src="facebook1.jpg" alt="Facebook" loading="lazy"></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-buttons">
+                <a href="#reservation" class="cta-button">Réserver Maintenant</a>
+            </div>
+    
+            <p>&copy; 2025 Yoné Express - Tous droits réservés.</p>
+        </footer>
+    
+
+    <script>
+        // Loader
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelector('.loader').classList.add('hidden');
+            }, 1000);
+        });
+
+        // Menu mobile
+        document.querySelector('.menu-toggle').addEventListener('click', () => {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        // Animation au scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.feature-card').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Gestion du formulaire multi-étapes
+        const formSteps = document.querySelectorAll('.form-step');
+        let currentStep = 0;
+
+        document.querySelectorAll('.next-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (validateStep(currentStep)) {
+                    formSteps[currentStep].classList.remove('active');
+                    currentStep++;
+                    formSteps[currentStep].classList.add('active');
+                }
+            });
+        });
+
+        document.querySelectorAll('.prev-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                formSteps[currentStep].classList.remove('active');
+                currentStep--;
+                formSteps[currentStep].classList.add('active');
+            });
+        });
+
+        function validateStep(step) {
+            const inputs = formSteps[step].querySelectorAll('input, select');
+            return Array.from(inputs).every(input => input.reportValidity());
+        }
+
+        // Système de suivi de colis
+        const statusSteps = [
+            { icon: '📦', label: 'Enregistré', status: 'registered' },
+            { icon: '🚚', label: 'En transit', status: 'transit' },
+            { icon: '🏪', label: 'En agence', status: 'agency' },
+            { icon: '✅', label: 'Livré', status: 'delivered' }
+        ];
+
+        document.querySelector('.cta-button').addEventListener('click', async () => {
+            const trackingNumber = document.querySelector('.tracking-input').value;
+            const progressBar = document.querySelector('.progress-bar');
+            const statusStepsContainer = document.querySelector('.status-steps');
+
+            // Simulation de chargement
+            progressBar.style.width = '33%';
+            statusStepsContainer.innerHTML = statusSteps.map(step => `
+                <div class="status-step">
+                    <div class="step-icon">${step.icon}</div>
+                    <div class="step-label">${step.label}</div>
+                </div>
+            `).join('');
+
+            // Animation progressive
+            const steps = document.querySelectorAll('.status-step');
+            steps.forEach((step, index) => {
+                setTimeout(() => {
+                    step.classList.add('active');
+                    progressBar.style.width = `${(index + 1) * 25}%`;
+                }, index * 500);
+            });
+        });
+
+        // FAQ
+        document.querySelectorAll('.faq-question').forEach(item => {
+            item.addEventListener('click', () => {
+                const answer = item.nextElementSibling;
+                const isOpen = answer.style.maxHeight;
+                
+                answer.style.maxHeight = isOpen ? null : answer.scrollHeight + 'px';
+                item.querySelector('.toggle-icon').textContent = isOpen ? '+' : '-';
+            });
+        });
+    </script>
+</body>
+</html>
